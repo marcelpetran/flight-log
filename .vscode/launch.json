@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-FlightLogApplication (with stub)",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "eu.profinit.education.flightlog.FlightLogApplication",
+            "projectName": "flightlog",
+            "args": "--spring.profiles.active=local,stub",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-FlightLogApplication (with RestClient)",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "eu.profinit.education.flightlog.FlightLogApplication",
+            "projectName": "flightlog",
+            "args": "--spring.profiles.active=local",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
