@@ -41,28 +41,29 @@ public class CsvExportServiceImpl implements CsvExportService {
         // Tip: můžete použít Apache Commons CSV - https://commons.apache.org/proper/commons-csv/ v příslušných pom.xml naleznete další komentáře s postupem
         List<Flight> flights = flightRepository.findAll(
             Sort.by(Sort.Order.asc("takeoffTime"),
-              Sort.Order.asc("id")));
-        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-              Writer writer = new OutputStreamWriter(byteArrayOutputStream, Charset.forName("ASCII"));
-            CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
-          // TODO print data to CSV
-                csvPrinter.printRecord("ID", "Flight Type", "Takeoff Time", "Landing Time", "Pilot", "Co-Pilot", "Towing Flight ID");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                for (Flight flight : flights) {
-                    String takeoffTime = flight.getTakeoffTime() != null ? flight.getTakeoffTime().format(formatter) : "";
-                    String landingTime = flight.getLandingTime() != null ? flight.getLandingTime().format(formatter) : "";
-                    String copilot = flight.getCopilot() != null ? flight.getCopilot().getFullName() : "";
-                    String towingFlightId = flight.getTowingFlight() != null ? flight.getTowingFlight().getId().toString() : "";
-                    csvPrinter.printRecord(
-                        flight.getId(),
-                        flight.getFlightType().name(),
-                        takeoffTime,
-                        landingTime,
-                        flight.getPilot().getFullName(),
-                        copilot,
-                        towingFlightId
-                    );  
-              }
-
+                Sort.Order.asc("id")));
+        throw new FlightLogException("Not implemented yet.");
+        // try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        //       Writer writer = new OutputStreamWriter(byteArrayOutputStream, Charset.forName("ASCII"));
+        //     CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+        //   // TODO print data to CSV
+        //         csvPrinter.printRecord("ID", "Flight Type", "Takeoff Time", "Landing Time", "Pilot", "Co-Pilot", "Towing Flight ID");
+        //         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        //         for (Flight flight : flights) {
+        //             String takeoffTime = flight.getTakeoffTime() != null ? flight.getTakeoffTime().format(formatter) : "";
+        //             String landingTime = flight.getLandingTime() != null ? flight.getLandingTime().format(formatter) : "";
+        //             String copilot = flight.getCopilot() != null ? flight.getCopilot().getFullName() : "";
+        //             String towingFlightId = flight.getTowingFlight() != null ? flight.getTowingFlight().getId().toString() : "";
+        //             csvPrinter.printRecord(
+        //                 flight.getId(),
+        //                 flight.getFlightType().name(),
+        //                 takeoffTime,
+        //                 landingTime,
+        //                 flight.getPilot().getFullName(),
+        //                 copilot,
+        //                 towingFlightId
+        //             );  
+        //       }
+        // }
     }
 }
