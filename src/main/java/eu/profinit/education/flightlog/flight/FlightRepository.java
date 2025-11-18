@@ -17,5 +17,8 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     // Tip: Výsledek si můžete ověřit v testu k této tříde v modulu services
     List<Flight> findAllByLandingTimeNullOrderByTakeoffTimeAscIdAsc();
 
+    //Metoda pro vsechny let ktere jiz pristaly
+    List<Flight> findAllByLandingTimeNotNullOrderByTakeoffTimeAscIdAsc();
+
     // TODO 5.1: Vytvorte metodu pro nacteni vlecnych letu pro vytvoreni dvojice letu na obrazovce Report
 }
