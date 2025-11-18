@@ -39,7 +39,6 @@ public class CsvExportServiceImpl implements CsvExportService {
   public FileExportTo getAllFlightsAsCsv() {
     List<Flight> flights = flightRepository.findAllByLandingTimeNotNullOrderByTakeoffTimeAscIdAsc();
 
-    // Fix for deprecated .withHeader(): Use Builder
     CSVFormat csvFormat = CSVFormat.Builder.create(CSVFormat.DEFAULT)
         .setHeader(HEADERS)
         .build();
