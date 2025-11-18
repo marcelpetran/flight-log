@@ -22,8 +22,10 @@ import eu.profinit.education.flightlog.common.exceptions.FlightLogException;
 public class CsvExportServiceImpl implements CsvExportService {
 
   // TODO 4.4: Define suitable properties for the CSV file as constants
-  private static final String[] HEADERS = { "Typ", "Immatrikulace", "Pilot", "Úkol", "Vzlet", "Přistání",
+    private static final String[] HEADERS = { "Typ", "Immatrikulace", "Pilot", "Úkol", "Vzlet", "Přistání",
       "Doba letu (minutky)" };
+    private static final MediaType CSV_MEDIA_TYPE = MediaType.parseMediaType("text/csv; charset=UTF-8");
+    private static final byte[] UTF8_BOM = new byte[] { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
   private final FlightRepository flightRepository;
@@ -44,9 +46,11 @@ public class CsvExportServiceImpl implements CsvExportService {
         .build();
 
     try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-        CSVPrinter printer = new CSVPrinter(
-            new OutputStreamWriter(out, StandardCharsets.UTF_8),
-            csvFormat)) {
+        OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+        CSVPrinter printer = new CSVPrinter(writer, csvFormat)) {
+
+      // Write UTF-8 BOM so that tools like Excel correctly detect encoding
+      out.write(UTF8_BOM);
 
       for (Flight flight : flights) {
         printer.printRecord(
@@ -64,9 +68,9 @@ public class CsvExportServiceImpl implements CsvExportService {
       printer.flush();
 
       // Correct order: (fileName, content, contentType)
-      return new FileExportTo(
+        return new FileExportTo(
           fileName,
-          MediaType.TEXT_PLAIN,
+          CSV_MEDIA_TYPE,
           StandardCharsets.UTF_8.name(),
           out.toByteArray());
 
