@@ -31,7 +31,7 @@ public class ClubDatabaseDaoImpl implements ClubDatabaseDao {
         try {
             // TODO 3.3: implementujte tělo volání endpointu ClubDB pomocí REST client get() metody
             userList = restClient.get()
-                    .uri("/users")
+                    .uri("/club/user")
                     .retrieve()
                 .body(User[].class);
 
