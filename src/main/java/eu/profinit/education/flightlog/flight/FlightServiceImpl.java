@@ -113,7 +113,24 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<FlightTuppleTo> getFlightsForReport() {
-        // TODO 5.2: Nactete dvojice letu pro obrazovku report
-        return new ArrayList<>();
+        // Load towplane flights that have an associated glider flight, order preserved by repository.
+        List<Flight> towplaneFlights = flightRepository
+            .findAllByFlightTypeAndGliderFlightIsNotNullOrderByTakeoffTimeAscIdAsc(Flight.Type.TOWPLANE);
+
+        List<FlightTuppleTo> result = new ArrayList<>(towplaneFlights.size());
+        for (Flight towplane : towplaneFlights) {
+            Flight glider = towplane.getGliderFlight();
+            if (glider != null) { // Safety check; repository should already ensure this.
+                result.add(FlightTuppleTo.builder()
+                    .towplane(FlightTo.fromEntity(towplane))
+                    .glider(FlightTo.fromEntity(glider))
+                    .build());
+            }
+        }
+        // Guard against excessive data in GUI
+        if (result.size() > MAX_RECORDS_IN_GUI) {
+            return result.subList(0, MAX_RECORDS_IN_GUI);
+        }
+        return result;
     }
 }
